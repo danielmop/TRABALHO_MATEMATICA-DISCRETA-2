@@ -14,7 +14,7 @@ public class Newton {
 		double h = 0.00000001;
 		boolean teste = false;
 		for (double i = -10; i <= 10; i = i + 0.1) {
-			if (f(i) * f(i + 0.1) > 0.00 && ((f(i + h) - f(i)) / h) * ((f((i + 0.1) + h) - f(i + 0.1)) / h) < 0.00) {
+			if (f(i) * f(i + 0.1) > 0.00 && derivada(i) * derivada(i + 0.1) < 0.00) {
 				teste = true;
 				refinamento(i, i + 0.1, i);
 			} else if (f(i) * f(i + 0.1) < 0.00) {
@@ -33,17 +33,26 @@ public class Newton {
 			if (f(i) >= -0.00000001 && f(i) <= 0.00000001) {
 				if (i > -0.4 && i < 0.4) {
 					raizes.add((double) Math.round(i));
-					System.out.println(Math.round(i));
+					System.out.println(i);
 				} else {
 					raizes.add(i);
 					System.out.println(i);
 				}
 			} else {
 				double funcao = f(i);
-				double derivada = (f(i + 0.00000001) - f(i)) / 0.00000001;
+				double derivada = derivada(i);
 				refinamento(i - (funcao / derivada), f, ref);
 			}
 		}
+	}
+	
+	public double derivada (double x) {
+		double resultado=0;
+		for(int i=coeficientes.length-1;i>0;i--){
+			resultado+=coeficientes[i]*i*Math.pow(x, i-1);		
+		}
+		return resultado;
+		
 	}
 
 	public double f(double x) {
